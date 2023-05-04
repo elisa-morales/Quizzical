@@ -3,6 +3,7 @@ import { nanoid } from "nanoid"
 import { decode } from "html-entities"
 import StartGame from "./components/StartGame"
 import Quiz from "./components/Quiz"
+import Button from "./components/Button"
 
 export default function App() {
   const [start, setStart] = useState(false)
@@ -10,7 +11,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("https://opentdb.com/api.php?amount=10&category=25&type=multiple")
+      const res = await fetch("https://opentdb.com/api.php?amount=5&category=25&type=multiple")
       const data = await res.json()
       let questionsData = []
       data.results.forEach((item) => {
@@ -77,20 +78,14 @@ export default function App() {
     />
   ))
 
-  const correct = allQuestions.map((item) => item.correctAnswer)
-
-  function checkAnswer(id, answer, correctAnswer) {
-    console.log(id)
-  }
+  const buttonElement = <Button data={allQuestions} />
 
   return (
     <div>
       {start ? (
         <div className="quiz-container">
           {quizElements}
-          <button className="check-btn" onClick={checkAnswer}>
-            Check answers
-          </button>
+          {buttonElement}
         </div>
       ) : (
         <StartGame startQuiz={startQuiz} />
