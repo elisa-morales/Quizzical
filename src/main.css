@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Karla:wght@700&display=swap");
+
+*,
+#root {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f5f7fb;
+  color: #293264;
+}
+
+h1 {
+  font-family: "Karla", sans-serif;
+  font-weight: 700;
+  margin: 10px;
+}
+
+h3 {
+  margin: 10px 0;
+}
+
+button {
+  width: 193px;
+  height: 52px;
+  border-radius: 15px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  background-color: #4d5b9e;
+  color: #f5f7fb;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.start-container {
+  text-align: center;
+  margin: auto;
+  height: 40%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.start-container > p {
+  margin-bottom: 20px;
+}
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.question-container {
+  margin: auto;
+  padding: 10px;
+  border-bottom: 1px solid #dbdef0;
+}
+
+.answer-containter {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 5px 0;
+  margin: auto;
+  gap: 10px;
+}
+
+.answer-btn {
+  cursor: pointer;
+}
+
+.answer-btn {
+  font-weight: 500;
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid #4d5b9e;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.deselected {
+  border: 1px solid #8489a1;
+  color: #8489a1;
+}
+
+.right {
+  background-color: #94d7a2;
+  border: none;
+}
+
+.wrong {
+  background-color: #f8bcbc;
+  color: #8489a1;
+  border: none;
+}
+
+.check-btn {
+  margin: 10px 0;
+  align-self: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+@media screen and (min-width: 768px) {
+  .quiz-container {
+    display: block;
+    margin: 55px;
+  }
+
+  .answer-containter {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .check-btn {
+    display: block;
+    margin: 15px auto;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .quiz-container {
+    display: block;
+    width: 700px;
+    margin: 30px auto;
+  }
+
+  .answer-containter {
+    padding: 10px 0;
+    gap: 20px;
+  }
+}
