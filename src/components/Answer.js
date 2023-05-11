@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 export default function Answer(props) {
-  const [select, setSelect] = useState(false)
+  const [select, setSelect] = useState(props.selected)
 
   const styles = {
     backgroundColor: select ? "#D6DBF5" : "transparent",

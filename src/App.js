@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { nanoid } from "nanoid"
 import { decode } from "html-entities"
+import shuffle from "./utils/shuffle"
 import StartGame from "./components/StartGame"
 import Quiz from "./components/Quiz"
 import Button from "./components/Button"
@@ -33,20 +34,7 @@ export default function App() {
     setStart(true)
   }
 
-  function shuffle(array) {
-    let currentIndex = array.length,
-      randomIndex
-
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-      ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
-    }
-
-    return array
-  }
-
-  const quizElements = allQuestions.map((item) => (
+  const answersData = allQuestions.map((item) => (
     <Quiz
       data={item}
       key={item.id}
@@ -78,7 +66,9 @@ export default function App() {
     />
   ))
 
-  const buttonElement = <Button data={allQuestions} />
+  const quizElements = answersData
+
+  const buttonElement = <Button data={answersData} />
 
   return (
     <div>
