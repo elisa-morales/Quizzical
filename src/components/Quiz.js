@@ -1,15 +1,25 @@
 import { decode } from "html-entities"
 import { nanoid } from "nanoid"
-// import Answer from "./Answer"
 
 export default function Quiz(props) {
-  const answerElements = props.data.answers.map((item) => (
-    <div className={item.checked === true && item.answer === item.correctAnswer ? "answer-btn right" : "answer-btn wrong"} key={nanoid()} onClick={(e) => props.handleClick(e, props.data.id)}>
-      {decode(item.answer)}
-    </div>
-  ))
+  const answerElements = props.data.answers.map((item) => {
+    let classBtn
+    if (item.selected && !item.result) {
+      classBtn = "selected"
+    } else if (item.result === true && item.isCorrect) {
+      classBtn = "right"
+    } else if (item.result === true && !item.isCorrect) {
+      classBtn = "wrong"
+    } else if (props.data.checked === true && !item.selected) {
+      classBtn = "deselected"
+    }
 
-  //console.log(props)
+    return (
+      <button className={`answer-btn ${classBtn}`} key={nanoid()} onClick={(e) => props.handleClick(e, props.data.id)} disabled={props.data.checked === true ? true : false}>
+        {decode(item.answer)}
+      </button>
+    )
+  })
 
   return (
     <div className="question-container">
@@ -18,6 +28,3 @@ export default function Quiz(props) {
     </div>
   )
 }
-
-// item.selected ? "answer-btn selected"
-// item.checked === true && item.answer === item.correctAnswer ? "answer-btn right" : "answer-btn wrong"

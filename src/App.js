@@ -4,7 +4,6 @@ import { decode } from "html-entities"
 import shuffle from "./utils/shuffle"
 import StartGame from "./components/StartGame"
 import Quiz from "./components/Quiz"
-import Button from "./components/Button"
 
 export default function App() {
   const [start, setStart] = useState(false)
@@ -30,7 +29,7 @@ export default function App() {
           answer: answer,
           correctAnswer: item.correct_answer,
           selected: "",
-          checked: false,
+          result: false,
           isCorrect: answer === item.correct_answer,
         })),
       })
@@ -67,9 +66,10 @@ export default function App() {
       return prevState.map((item) => {
         return {
           ...item,
+          checked: true,
           answers: item.answers.map((answer) => {
             if (answer.selected) {
-              return { ...answer, checked: true }
+              return { ...answer, result: true }
             } else {
               return answer
             }
@@ -84,7 +84,7 @@ export default function App() {
       {start ? (
         <div className="quiz-container">
           {quizElements}
-          <button className="check-btn" onClick={checkAllAnswers}>
+          <button className="btn check-btn" onClick={checkAllAnswers}>
             Check answers
           </button>
         </div>
