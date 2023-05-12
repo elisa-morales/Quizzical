@@ -12,6 +12,20 @@ export default function Answer(props) {
     setSelect((prevState) => !prevState)
   }
 
+  function checkAllAnswers() {
+    setAllQuestions((prevState) => {
+      return prevState.map((item) =>
+        item.answers.map((answer) => {
+          if (answer.selected) {
+            return { ...answer, checked: true }
+          } else {
+            return item
+          }
+        })
+      )
+    })
+  }
+
   return (
     <div style={styles} selected={false} className="answer-btn" onClick={() => selectAnswer(props.id)}>
       {props.answer}

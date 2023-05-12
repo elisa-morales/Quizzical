@@ -4,10 +4,12 @@ import { nanoid } from "nanoid"
 
 export default function Quiz(props) {
   const answerElements = props.data.answers.map((item) => (
-    <div className={item.selected ? "deselected" : "answer-btn"} key={nanoid()} onClick={(e) => props.handleClick(e, props.data.id)}>
+    <div className={item.checked === true && item.answer === item.correctAnswer ? "answer-btn right" : "answer-btn wrong"} key={nanoid()} onClick={(e) => props.handleClick(e, props.data.id)}>
       {decode(item.answer)}
     </div>
   ))
+
+  //console.log(props)
 
   return (
     <div className="question-container">
@@ -16,3 +18,6 @@ export default function Quiz(props) {
     </div>
   )
 }
+
+// item.selected ? "answer-btn selected"
+// item.checked === true && item.answer === item.correctAnswer ? "answer-btn right" : "answer-btn wrong"

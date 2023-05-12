@@ -28,10 +28,11 @@ export default function App() {
         question: item.question,
         answers: shuffle([...item.incorrect_answers, item.correct_answer]).map((answer) => ({
           answer: answer,
+          correctAnswer: item.correct_answer,
           selected: "",
+          checked: false,
           isCorrect: answer === item.correct_answer,
         })),
-        correctAnswer: item.correct_answer,
       })
     })
     setAllQuestions(questionsData)
@@ -41,16 +42,16 @@ export default function App() {
     setStart(true)
   }
 
-  const quizElements = allQuestions.map((item) => <Quiz key={item.id} id={item.id} data={item} handleClick={prova} />)
+  const quizElements = allQuestions.map((item) => <Quiz key={item.id} id={item.id} data={item} handleClick={chooseAnswer} />)
 
-  function prova(e, id) {
+  function chooseAnswer(e, id) {
     setAllQuestions((prevState) => {
       return prevState.map((item) => {
         if (item.id === id) {
           return {
             ...item,
             answers: item.answers.map((answer) => {
-              const selectAnswer = answer.answer === e.target.textContent
+              const selectAnswer = decode(answer.answer) === e.target.textContent
               return { ...answer, selected: selectAnswer }
             }),
           }
@@ -60,5 +61,36 @@ export default function App() {
       })
     })
   }
-  return <>{start ? <div className="quiz-container">{quizElements}</div> : <StartGame startQuiz={startQuiz} />}</>
+
+  function checkAllAnswers() {
+    setAllQuestions((prevState) => {
+      return prevState.map((item) => {
+        return {
+          ...item,
+          answers: item.answers.map((answer) => {
+            if (answer.selected) {
+              return { ...answer, checked: true }
+            } else {
+              return answer
+            }
+          }),
+        }
+      })
+    })
+  }
+
+  return (
+    <>
+      {start ? (
+        <div className="quiz-container">
+          {quizElements}
+          <button className="check-btn" onClick={checkAllAnswers}>
+            Check answers
+          </button>
+        </div>
+      ) : (
+        <StartGame startQuiz={startQuiz} />
+      )}
+    </>
+  )
 }
