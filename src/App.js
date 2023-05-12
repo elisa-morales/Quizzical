@@ -9,77 +9,56 @@ import Button from "./components/Button"
 export default function App() {
   const [start, setStart] = useState(false)
   const [allQuestions, setAllQuestions] = useState([])
+  const [] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("https://opentdb.com/api.php?amount=5&category=25&type=multiple")
       const data = await res.json()
-      let questionsData = []
-      data.results.forEach((item) => {
-        questionsData.push({
-          id: nanoid(),
-          question: item.question,
-          answers: shuffle([...item.incorrect_answers, item.correct_answer]),
-          correctAnswer: item.correct_answer,
-          selected: false,
-          checked: false,
-        })
-      })
-      setAllQuestions(questionsData)
+      getQuestions(data.results)
     }
     fetchData()
   }, [])
+
+  function getQuestions(data) {
+    let questionsData = []
+    data.forEach((item) => {
+      questionsData.push({
+        id: nanoid(),
+        question: item.question,
+        answers: shuffle([...item.incorrect_answers, item.correct_answer]).map((answer) => ({
+          answer: answer,
+          selected: "",
+          isCorrect: answer === item.correct_answer,
+        })),
+        correctAnswer: item.correct_answer,
+      })
+    })
+    setAllQuestions(questionsData)
+  }
 
   function startQuiz() {
     setStart(true)
   }
 
-  const answersData = allQuestions.map((item) => (
-    <Quiz
-      data={item}
-      key={item.id}
-      id={item.id}
-      question={item.question}
-      answers={[
-        {
-          answer: item.answers[0],
-          id: nanoid(),
-          selected: false,
-        },
-        {
-          answer: item.answers[1],
-          id: nanoid(),
-          selected: false,
-        },
-        {
-          answer: item.answers[2],
-          id: nanoid(),
-          selected: false,
-        },
-        {
-          answer: item.answers[3],
-          id: nanoid(),
-          selected: false,
-        },
-      ]}
-      correctAnswer={decode(item.correctAnswer)}
-    />
-  ))
+  const quizElements = allQuestions.map((item) => <Quiz key={item.id} id={item.id} data={item} handleClick={prova} />)
 
-  const quizElements = answersData
-
-  const buttonElement = <Button data={answersData} />
-
-  return (
-    <div>
-      {start ? (
-        <div className="quiz-container">
-          {quizElements}
-          {buttonElement}
-        </div>
-      ) : (
-        <StartGame startQuiz={startQuiz} />
-      )}
-    </div>
-  )
+  function prova(e, id) {
+    setAllQuestions((prevState) => {
+      return prevState.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            answers: item.answers.map((answer) => {
+              const selectAnswer = answer.answer === e.target.textContent
+              return { ...answer, selected: selectAnswer }
+            }),
+          }
+        } else {
+          return item
+        }
+      })
+    })
+  }
+  return <>{start ? <div className="quiz-container">{quizElements}</div> : <StartGame startQuiz={startQuiz} />}</>
 }
