@@ -8,7 +8,7 @@ import Quiz from "./components/Quiz"
 export default function App() {
   const [start, setStart] = useState(false)
   const [allQuestions, setAllQuestions] = useState([])
-  const [] = useState()
+  let endGame = false
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,10 +38,15 @@ export default function App() {
   }
 
   function startQuiz() {
-    setStart(true)
+    setStart((prevState) => !prevState)
   }
 
-  const quizElements = allQuestions.map((item) => <Quiz key={item.id} id={item.id} data={item} handleClick={chooseAnswer} />)
+  const quizElements = allQuestions.map((item) => {
+    if (item.checked === true) {
+      endGame = true
+    }
+    return <Quiz key={item.id} id={item.id} data={item} handleClick={chooseAnswer} />
+  })
 
   function chooseAnswer(e, id) {
     setAllQuestions((prevState) => {
@@ -79,13 +84,17 @@ export default function App() {
     })
   }
 
+  function playAgain() {
+    window.location.reload(true)
+  }
+
   return (
     <>
       {start ? (
         <div className="quiz-container">
           {quizElements}
-          <button className="btn check-btn" onClick={checkAllAnswers}>
-            Check answers
+          <button className="btn check-btn" onClick={endGame ? playAgain : checkAllAnswers}>
+            {endGame ? "Play again" : "Check answers"}
           </button>
         </div>
       ) : (
