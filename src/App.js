@@ -6,13 +6,21 @@ import StartGame from "./components/StartGame"
 import Quiz from "./components/Quiz"
 import BlobYellow from "./components/BlobYellow"
 import BlobBlue from "./components/BlobBlue"
+import ClipLoader from "react-spinners/ClipLoader"
 
 export default function App() {
   const [start, setStart] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [allQuestions, setAllQuestions] = useState([])
   let endGame = false
 
+  const override = {
+    display: "block",
+    margin: "300px auto",
+  }
+
   useEffect(() => {
+    setLoading(true)
     const fetchData = async () => {
       const res = await fetch("https://opentdb.com/api.php?amount=5&category=25&type=multiple")
       const data = await res.json()
@@ -37,6 +45,7 @@ export default function App() {
       })
     })
     setAllQuestions(questionsData)
+    setLoading(false)
   }
 
   function startQuiz() {
@@ -92,14 +101,18 @@ export default function App() {
 
   return (
     <>
-    <BlobYellow />
+      <BlobYellow />
       {start ? (
-        <div className="quiz-container">
-          {quizElements}
-          <button className="btn check-btn" onClick={endGame ? playAgain : checkAllAnswers}>
-            {endGame ? "Play again" : "Check answers"}
-          </button>
-        </div>
+        !loading ? (
+          <div className="quiz-container">
+            {quizElements}
+            <button className="btn check-btn" onClick={endGame ? playAgain : checkAllAnswers}>
+              {endGame ? "Play again" : "Check answers"}
+            </button>
+          </div>
+        ) : (
+          <ClipLoader color="#4d5b9e" cssOverride={override} />
+        )
       ) : (
         <StartGame startQuiz={startQuiz} />
       )}
