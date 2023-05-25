@@ -4,6 +4,8 @@ import { decode } from "html-entities"
 import shuffle from "./utils/shuffle"
 import StartGame from "./components/StartGame"
 import Quiz from "./components/Quiz"
+import BlobYellow from "./components/BlobYellow"
+import BlobBlue from "./components/BlobBlue"
 
 export default function App() {
   const [start, setStart] = useState(false)
@@ -90,6 +92,7 @@ export default function App() {
 
   return (
     <>
+    <BlobYellow />
       {start ? (
         <div className="quiz-container">
           {quizElements}
@@ -100,6 +103,7 @@ export default function App() {
       ) : (
         <StartGame startQuiz={startQuiz} />
       )}
+      <BlobBlue />
     </>
   )
 }
