@@ -22,9 +22,15 @@ export default function Quiz(props) {
   })
 
   return (
-    <div className="question-container">
-      <h3>{decode(props.data.question)}</h3>
-      <div className="answer-containter">{answerElements}</div>
-    </div>
+    <>
+      {answerElements ? (
+        <div className="question-container">
+          <h3>{decode(props.data.question)}</h3>
+          <div className="answer-containter">{answerElements}</div>
+        </div>
+      ) : (
+        "Loading"
+      )}
+    </>
   )
 }
