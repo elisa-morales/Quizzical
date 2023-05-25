@@ -103,15 +103,15 @@ export default function App() {
     <>
       <BlobYellow />
       {start ? (
-        !loading ? (
+        loading ? (
+          <ClipLoader color="#4d5b9e" cssOverride={override} />
+        ) : (
           <div className="quiz-container">
             {quizElements}
             <button className="btn check-btn" onClick={endGame ? playAgain : checkAllAnswers}>
               {endGame ? "Play again" : "Check answers"}
             </button>
           </div>
-        ) : (
-          <ClipLoader color="#4d5b9e" cssOverride={override} />
         )
       ) : (
         <StartGame startQuiz={startQuiz} />
